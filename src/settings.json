@@ -1,5 +1,7 @@
 {
     "container": "map",
-    "accessToken": "",
-    "style": "mapbox://styles/mapbox/standard"
+    "accessToken": "pk.eyJ1IjoiZG9tZWFqYXIiLCJhIjoiY2p2M2FxYXozMDEyMjN5bXdsZHdocnRvYiJ9.FvhklTIlyW6hqvuvP6d0fg",
+    "style": "mapbox://styles/domeajar/cltahbfox007h01r5ecfka5w0",
+    "zoom": 0
+    
 }
