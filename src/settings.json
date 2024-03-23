@@ -2,6 +2,16 @@
     "container": "map",
     "accessToken": "pk.eyJ1IjoiZG9tZWFqYXIiLCJhIjoiY2p2M2FxYXozMDEyMjN5bXdsZHdocnRvYiJ9.FvhklTIlyW6hqvuvP6d0fg",
     "style": "mapbox://styles/domeajar/cltahbfox007h01r5ecfka5w0",
-    "zoom": 0
-    
+    "zoom": 12,
+    "center": [
+        -122.4131,
+        37.772248
+    ],
+    "maxBounds": [
+        [-122.77457701787401, 37.588346441937205],
+        [-122.0501006369266, 37.961540476172914] 
+    ],
+    "pitch": 0
+    //"customAttribution": "<a href= 'https://hpla.lacity.org/' target='_blank'>Historic Places LA</a> | <a href= 'https://geohub.lacity.org/' target='_blank'>LA City GeoHub</a>"
+
 }

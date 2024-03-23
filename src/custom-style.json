@@ -1,4 +1,31 @@
 {
-    "sources": {},
-    "layers": []
+    "sources": {
+        "supervisor-polygons": {
+            "type": "geojson",
+            "data": {
+                "type": "FeatureCollection",
+                "features": []
+            }
+        }
+    },
+    "layers": [
+        {
+            "id": "supervisor-outline",
+            "type": "line",
+            "source": "supervisor-polygons",
+            "paint": {
+                "line-color": "black",
+                "line-width": 2
+            }
+        },
+        {
+            "id": "supervisor-fill",
+            "type": "fill",
+            "source": "supervisor-polygons",
+            "paint": {
+                "fill-color": "#99d8c9",
+                "fill-opacity": 0.5
+            }
+        },
+    ]
 }
