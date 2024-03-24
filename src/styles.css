@@ -6,18 +6,24 @@ body {
 main {
     display: block;
     position: fixed;
-    top: 58px;
+    top: 40px;
     right: 0;
     bottom: 0;
     left: 0;
 }
 
 #map {
+    margin: 3%;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
     height: 100%;
+}
+
+#minimap-container {
+    border: black;
+    border-width: 2;
 }
 
 header {
@@ -33,8 +39,8 @@ header div {
 
 
 header {
-    padding: 12px;
-    background-color: rgba(223, 124, 190, 0.51);
+    padding: 10px;
+    background-color: rgba(112, 144, 231, 0.51);
 }
 
 
