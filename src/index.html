@@ -7,7 +7,6 @@
     <body>
         <header>
             Comp Map Template
-            <div></div>
         </header>
         <div id="input-container">
             <input type="text" id="subjectProperty" placeholder="Subject Property BlockLot">
@@ -17,30 +16,12 @@
             <input type="text" id="comparableFour" placeholder="Comparable 4 BlockLot">
             <input type="text" id="comparableFive" placeholder="Comparable 5 BlockLot">
             <input type="text" id="comparableSix" placeholder="Comparable 6 BlockLot">
-            <button onclick="submitBlklots()">Submit</button>
+            <button id="submitBtn">Submit</button>
         </div>
         <main>
             <div id="map"></div>
-            <div id="minimap-container" style="position: absolute; bottom: 10px; right: 65px; width: 200px; height: 200px;"></div>
+            <div id="minimap-container" style="position: absolute; bottom: 10px; right: 65px; width: 250px; height: 350px;"></div>
         </main>
+        <script src="index.js" type="module"></script>
     </body>
-    <script src="index.js" type="module"></script>
 </html>
-
-
-<!--
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-    <head>
-        <meta charset="utf-8">
-        <title></title>
-    </head>
-    <body>
-        <main>
-            <div id="map"></div>
-            <div id="minimap-container" style="position: absolute; bottom: 10px; right: 10px; width: 200px; height: 200px;"></div>
-        </main>
-    </body>
-    <script src="index.js" type="module"></script>
-</html>
--->

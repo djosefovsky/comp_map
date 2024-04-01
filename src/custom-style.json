@@ -1,55 +1,6 @@
 {
     "sources": {
-        "supervisor-polygons": {
-            "type": "geojson",
-            "data": {
-                "type": "FeatureCollection",
-                "features": []
-            }
-        },
-        "subject-polygon": {
-            "type": "geojson",
-            "data": {
-                "type": "FeatureCollection",
-                "features": []
-            }
-        },
-        "comparable-one-polygon": {
-            "type": "geojson",
-            "data": {
-                "type": "FeatureCollection",
-                "features": []
-            }
-        },
-        "comparable-two-polygon": {
-            "type": "geojson",
-            "data": {
-                "type": "FeatureCollection",
-                "features": []
-            }
-        },
-        "comparable-three-polygon": {
-            "type": "geojson",
-            "data": {
-                "type": "FeatureCollection",
-                "features": []
-            }
-        },
-        "comparable-four-polygon": {
-            "type": "geojson",
-            "data": {
-                "type": "FeatureCollection",
-                "features": []
-            }
-        },
-        "comparable-five-polygon": {
-            "type": "geojson",
-            "data": {
-                "type": "FeatureCollection",
-                "features": []
-            }
-        },
-        "comparable-six-polygon": {
+        "dynamic-polygons": {
             "type": "geojson",
             "data": {
                 "type": "FeatureCollection",
@@ -59,144 +10,18 @@
     },
     "layers": [
         {
-            "id": "supervisor-outline",
+            "id": "ddynamic-polygons-line",
             "type": "line",
-            "source": "supervisor-polygons",
+            "source": "dynamic-polygons",
             "paint": {
                 "line-color": "black",
-                "line-width": 2
+                "line-width": 1
             }
         },
         {
-            "id": "supervisor-fill",
+            "id": "dynamic-polygons-fill",
             "type": "fill",
-            "source": "supervisor-polygons",
-            "paint": {
-                "fill-color": "#99d8c9",
-                "fill-opacity": 0.5
-            }
-        },
-        {
-            "id": "subject-outline",
-            "type": "line",
-            "source": "subject-polygon",
-            "paint": {
-                "line-color": "black",
-                "line-width": 2
-            }
-        },
-        {
-            "id": "subject-fill",
-            "type": "fill",
-            "source": "subject-polygon",
-            "paint": {
-                "fill-color": "#99d8c9",
-                "fill-opacity": 0.5
-            }
-        },
-        {
-            "id": "comparable-one-outline",
-            "type": "line",
-            "source": "comparable-one-polygon",
-            "paint": {
-                "line-color": "black",
-                "line-width": 2
-            }
-        },
-        {
-            "id": "comparable-one-fill",
-            "type": "fill",
-            "source": "comparable-one-polygon",
-            "paint": {
-                "fill-color": "#99d8c9",
-                "fill-opacity": 0.5
-            }
-        },
-        {
-            "id": "comparable-two-outline",
-            "type": "line",
-            "source": "comparable-two-polygon",
-            "paint": {
-                "line-color": "black",
-                "line-width": 2
-            }
-        },
-        {
-            "id": "comparable-two-fill",
-            "type": "fill",
-            "source": "comparable-two-polygon",
-            "paint": {
-                "fill-color": "#99d8c9",
-                "fill-opacity": 0.5
-            }
-        },
-        {
-            "id": "comparable-three-outline",
-            "type": "line",
-            "source": "comparable-three-polygon",
-            "paint": {
-                "line-color": "black",
-                "line-width": 2
-            }
-        },
-        {
-            "id": "comparable-three-fill",
-            "type": "fill",
-            "source": "comparable-three-polygon",
-            "paint": {
-                "fill-color": "#99d8c9",
-                "fill-opacity": 0.5
-            }
-        },
-        {
-            "id": "comparable-four-outline",
-            "type": "line",
-            "source": "comparable-four-polygon",
-            "paint": {
-                "line-color": "black",
-                "line-width": 2
-            }
-        },
-        {
-            "id": "comparable-four-fill",
-            "type": "fill",
-            "source": "comparable-four-polygon",
-            "paint": {
-                "fill-color": "#99d8c9",
-                "fill-opacity": 0.5
-            }
-        },
-        {
-            "id": "comparable-five-outline",
-            "type": "line",
-            "source": "comparable-five-polygon",
-            "paint": {
-                "line-color": "black",
-                "line-width": 2
-            }
-        },
-        {
-            "id": "comparable-five-fill",
-            "type": "fill",
-            "source": "comparable-five-polygon",
-            "paint": {
-                "fill-color": "#99d8c9",
-                "fill-opacity": 0.5
-            }
-        },
-        {
-            "id": "comparable-six-outline",
-            "type": "line",
-            "source": "comparable-six-polygon",
-            "paint": {
-                "line-color": "black",
-                "line-width": 2
-            }
-        },
-        {
-            "id": "comparable-six-fill",
-            "type": "fill",
-            "source": "comparable-six-polygon",
+            "source": "dynamic-polygons",
             "paint": {
                 "fill-color": "#99d8c9",
                 "fill-opacity": 0.5

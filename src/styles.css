@@ -22,8 +22,13 @@ main {
 }
 
 #minimap-container {
-    border: black;
-    border-width: 2;
+    position: absolute;
+    bottom: 10px;
+    right: 65px;
+    width: 200px;
+    height: 200px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); 
+    border-radius: 8px; 
 }
 
 header {
@@ -38,9 +43,26 @@ header div {
 }
 
 
+
 header {
-    padding: 10px;
+    padding: 1px;
     background-color: rgba(112, 144, 231, 0.51);
 }
 
+.custom-popup {
+    font-size: 14px;
+    font-weight: normal;
+}
 
+.mapboxgl-popup .mapboxgl-popup-content {
+    background-color: rgba(255, 255, 255, 0.87); /* Semi-transparent white */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding-left: 5;
+    padding-right: 5;
+    padding-bottom: 1;
+    padding-top: 1;
+}
+
+.mapboxgl-popup .mapboxgl-popup-tip {
+    display: legacy; /* Hide the default arrow if needed */

@@ -1,26 +1,115 @@
+console.log('Script loaded');
+// Import necessary styles and libraries
 import "./styles.css";
 import "mapbox-gl/dist/mapbox-gl.css";
 import * as mapboxgl from "mapbox-gl";
-import settings from "./settings.json";
-import custom from "./custom-style.json";
-import { feature } from "@turf/turf";
+import settings from "./settings.json"; // Mapbox settings, including accessToken and initial map setup
+import custom from "./custom-style.json"; // Custom styles for the map
+import { centroid } from "@turf/turf";
+import mapboxGl from "mapbox-gl";
 
+// Set the Mapbox access token
 mapboxgl.accessToken = settings.accessToken;
 
+// Initialize the map with settings from settings.json file
 const map = new mapboxgl.Map(settings);
 
-map.on("load", async () => {
-    const subjectProperty = "https://data.sfgov.org/resource/acdm-wktn.geojson?blklot=1153004"
-    const comparableOne = "https://data.sfgov.org/resource/acdm-wktn.geojson?blklot=1153021"
-    const comparableTwo = "https://data.sfgov.org/resource/acdm-wktn.geojson?blklot=117002B"
-    const comparableThree = "https://data.sfgov.org/resource/acdm-wktn.geojson?blklot=1102009"
-    const comparableFour = "https://data.sfgov.org/resource/acdm-wktn.geojson?blklot=1180015"
-    const comparableFive = "https://data.sfgov.org/resource/acdm-wktn.geojson?blklot=1156013"
-    const comparableSix = "https://data.sfgov.org/resource/acdm-wktn.geojson?blklot=1155010"
-    const urls = [subjectProperty, comparableOne, comparableTwo, comparableThree, comparableFour, comparableFive, comparableSix];
-    const bounds = new mapboxgl.LngLatBounds();
+// Function to fetch GeoJSON data based on a URL
+async function fetchGeoJSON(url) {
+    const response = await fetch(url);
+    return response.json();
+}
 
+let popupsByBlklot = new Map(); // To track popups by blklot
 
+// UpdatePolygons function with turf centroid calculation and popup creation
+async function updatePolygons(userInputs) {
+    let features = [];
+    const bounds = new mapboxGl.LngLatBounds();
+
+    for (const input of userInputs) {
+        const url = `https://data.sfgov.org/resource/acdm-wktn.geojson?blklot=${input.blklot}`;
+        const data = await fetchGeoJSON(url);
+        
+        data.features.forEach((feature, index) => {
+            features.push(feature);
+            const centroidCoords = centroid(feature).geometry.coordinates;
+            bounds.extend(centroidCoords);
+
+            // Only create a popup if one does not already exist for this blklot
+            if (!popupsByBlklot.has(input.blklot)) {
+                // Popup text creation
+                const popupText = input.inputName;
+                // Calling the popup creation function
+                const popup = createPopup(map, centroidCoords, popupText, `popup-${index}`);
+                // Store the popup reference
+                popupsByBlklot.set(input.blklot, popup);
+            }
+        });
+    }
+
+    // Update dynamic-polygons source
+    if (map.getSource("dynamic-polygons")) {
+        map.getSource("dynamic-polygons").setData({
+            type: "FeatureCollection",
+            features: features,
+        });
+    }
+
+    // Fit the map bounds to the new features
+    if (!bounds.isEmpty()) {
+        map.once("idle", () => {
+            map.fitBounds(bounds, {
+                padding: 100 // Adjust padding as needed
+            });
+        });
+    }
+}
+
+//Function to create and return default popop
+function createPopup(map, lngLat, text, className) {
+    const popup = new mapboxgl.Popup({ className: `custom-popup ${className}`, closeButton: false, closeOnClick: false })
+    .setLngLat(lngLat)
+    .setHTML(`<p>${text}</p>`)
+    .addTo(map);
+
+    return popup;
+}
+
+// Function to collect inputs and update the map with polygons
+async function submitBlklots() {
+    console.log("submitBlklots called");
+    const userInputs = [
+        { blklot: document.getElementById("subjectProperty").value, inputName: "Subject" },
+        { blklot: document.getElementById("comparableOne").value, inputName: "Comp 1" },
+        { blklot: document.getElementById("comparableTwo").value, inputName: "Comp 2" },
+        { blklot: document.getElementById("comparableThree").value, inputName: "Comp 3" },
+        { blklot: document.getElementById("comparableFour").value, inputName: "Comp 4" },
+        { blklot: document.getElementById("comparableFive").value, inputName: "Comp 5" },
+        { blklot: document.getElementById("comparableSix").value, inputName: "Comp 6" },
+    ].filter(input => input.blklot.trim() !== ""); // Filter out any inputs that are empty
+
+    // Update the map with polygons based on user inputs
+    updatePolygons(userInputs);
+};
+// Make submitBlklots global after its definition
+window.submitBlklots = submitBlklots;
+
+// Attach the DOMContentLoaded listener at the top level
+try {
+    document.getElementById("submitBtn").addEventListener("click", submitBlklots);
+
+    // Test event listeners for each input
+    ["subjectProperty", "comparableOne", "comparableTwo", "comparableThree", "comparableFour", "comparableFive", "comparableSix"].forEach(id => {
+        document.getElementById(id).addEventListener("click", () => {
+            console.log(`Input ${id} clicked`);
+        });
+    });
+} catch (error) {
+    console.error("Error attaching event listeners: ", error);
+}
+
+map.on("load", () => {
     const style = map.getStyle();
     style.sources = {
         ...style.sources,
@@ -29,51 +118,13 @@ map.on("load", async () => {
     style.layers.push(...custom.layers);
     map.setStyle(style);
 
-    map.getSource("subject-polygon")
-        .setData(subjectProperty)
 
-    map.getSource("comparable-one-polygon")
-        .setData(comparableOne)
-
-    map.getSource("comparable-two-polygon")
-        .setData(comparableTwo)
-
-    map.getSource("comparable-three-polygon")
-        .setData(comparableThree)
-
-    map.getSource("comparable-four-polygon")
-        .setData(comparableFour)
-
-    map.getSource("comparable-five-polygon")
-        .setData(comparableFive)
-
-    map.getSource("comparable-six-polygon")
-        .setData(comparableSix)
-
-    for (const url of urls) {
-        const response = await fetch(url);
-        const data = await response.json();
-
-        data.features.forEach((feature) => {
-            feature.geometry.coordinates.forEach((polygon) => {
-                polygon.forEach((coord) => {
-                    bounds.extend(coord);
-                });
-            });
-        });    
-    }
-    
-    map.once('idle', () => {
-        map.fitBounds(bounds, {
-            padding: 100
-        });
-    });
 
     // Initialize the Mini map
     var minimap = new mapboxgl.Map({
         container: "minimap-container",
-        style: "mapbox://styles/mapbox/light-v11",
-        zoom: map.getZoom() - 5,
+        style: "mapbox://styles/domeajar/cluee5jau00jl01q5alqn64a7",
+        zoom: map.getZoom() - 4,
         center: map.getCenter(),
     });
 
@@ -81,7 +132,7 @@ map.on("load", async () => {
     function updateMinimap() {
         minimap.jumpTo({
             center: map.getCenter(),
-            zoom: map.getZoom() - 5,
+            zoom: map.getZoom() - 4,
         });
     }
 
@@ -107,7 +158,7 @@ map.on("load", async () => {
             "type": "line",
             "source": "frame",
             "paint": {
-                "line-color": "#f2de96", // Frame color
+                "line-color": "#993404", // Frame color
                 "line-width": 2 // Frame thickness
             }
         });
@@ -134,7 +185,7 @@ map.on("load", async () => {
         });
 
         // Log the frame's source data to the console
-        console.log(minimap.getSource("frame")._data);
+        //console.log(minimap.getSource("frame")._data);
     }
 
     // Ensure minimap is loaded before adding frame source and layer
@@ -150,5 +201,5 @@ map.on("load", async () => {
     map.on("move", updateMinimapFrame);
     map.on("moveend", updateMinimapFrame);
 
-    
+map.addControl(new mapboxgl.NavigationControl());
 });
