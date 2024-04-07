@@ -1,57 +1,92 @@
 body {
     margin: 0;
+    padding-left: 175px; /* Adjust according to the width of #input-container */
     font-family: sans-serif;
+    box-sizing: border-box;
+}
+
+header {
+    font-weight: bold;
+    font-size: 22;
+    color:white;
+    border-bottom: 2px double black;
+    background-color: #008CBA;
+    padding: 7px 1px; /* Increased padding to ensure visibility */
+    position: fixed; /* Keeps the header at the top */
+    width: 100%; /* Adjusts the width to prevent overlap with the input container */
+    top: 0;
+    left: 175px; /* Pushes the header to the right to make space for the input container */
+    box-sizing: border-box;
+}
+
+#input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+    gap: 5px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 175px; /* Relative width to the viewport */
+    max-width: 175px; /* A max width can be used to maintain layout up to a point */
+    height: 100vh; /* 100% of the viewport height */
+    background-color: #f0f0f0;
+    overflow-x: hidden; /* This should prevent the horizontal scrollbar */
+    overflow-y: auto; /* Adds a scrollbar if the content overflows */
+    box-sizing: border-box;
+}
+
+input, button {
+    width: 100%; /* Makes the input and button fill the container */
+    padding: 10px;
+    margin-bottom: 10px; /* Adds space below each input/button */
+    box-sizing: border-box;
+}
+
+button {
+    cursor: pointer;
+    align-self: center;
 }
 
 main {
-    display: block;
-    position: fixed;
-    top: 40px;
+    position: absolute;
+    top: 40px; /* Adjust this value based on your header height */
     right: 0;
     bottom: 0;
-    left: 0;
+    left: 175px; /* Adjust to match the width of the #input-container */
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+#map, #minimap-container {
+    position: relative; /* Adjusts positioning within the main container */
+    box-sizing: border-box;
 }
 
 #map {
-    margin: 3%;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    height: 100%;
+    position: absolute; /* absolute positioning within the main container */
+    top: 0; /* aligns to the top edge of the main container */
+    left: 0; /* aligns to the left edge of the main container */
+    right: 0; /* aligns to the right edge of the main container */
+    bottom: 0; /* aligns to the bottom edge of the main container */
+    box-sizing: border-box;
 }
 
 #minimap-container {
     position: absolute;
-    bottom: 10px;
-    right: 65px;
-    width: 200px;
-    height: 200px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); 
-    border-radius: 8px; 
+    bottom: 25px;
+    right: 15px;
+    width: 250px;
+    height: 350px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
 }
 
-header {
-    
-    font-weight: bold;
-    border-bottom: 2px double black;
-}
-
-header div {
-    font-size: 0.8em;
-    font-weight: normal;
-}
-
-
-
-header {
-    padding: 1px;
-    background-color: rgba(112, 144, 231, 0.51);
-}
-
-.custom-popup {
-    font-size: 14px;
-    font-weight: normal;
+input::placeholder {
+    font-weight: light;
+    color: grey;
+    font-size: 12px;
 }
 
 .mapboxgl-popup .mapboxgl-popup-content {
@@ -62,7 +97,152 @@ header {
     padding-right: 5;
     padding-bottom: 1;
     padding-top: 1;
+    line-height: 0;
 }
 
-.mapboxgl-popup .mapboxgl-popup-tip {
-    display: legacy; /* Hide the default arrow if needed */
+.custom-popup {
+    font-size: 14px;
+    font-weight: normal;
+}
+
+label {
+    font-size: 12px; /* Match the size with your .options-heading */
+    color: #333; /* Match the color with your .options-heading */
+    font-weight: bold; /* Match the weight with your .options-heading */
+    padding-left: 10px; /* Align text with button text if necessary */
+    display: block; /* Ensure label occupies its own line */
+    margin-top: 5px; /* Space above the label if needed */
+    margin-bottom: 5px; /* Space below the label, just above the input field */
+}
+
+.input-error {
+    color: red;
+    font-size: 11px;
+    margin-top: 1px; /* Space between input and error message */
+}
+
+input.error {
+    border-color: red; /* Highlights the input with an error */
+}
+
+
+button#submitBtn {
+    background-color: #008CBA; /* A shade of blue */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+button#submitBtn:hover {
+    background-color: #005161; /* A darker shade of blue for hover effect */
+}
+
+button#clearPopupsBtn {
+    background-color: #008CBA; /* A similar shade of blue to keep it consistent */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-top: 5px; /* Adds some space between this button and any elements above it */
+}
+
+button#clearPopupsBtn:hover {
+    background-color: #005161; /* A darker shade of blue for the hover effect */
+}
+
+button#minimapLeftBtn {
+    background-color: #008CBA; /* A similar shade of blue to keep it consistent */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-top: 5px; /* Adds some space between this button and any elements above it */
+}
+
+button#minimapLeftBtn:hover {
+    background-color: #005161; /* A darker shade of blue for the hover effect */
+}
+
+button#minimapRightBtn {
+    background-color: #008CBA; /* A similar shade of blue to keep it consistent */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-top: 5px; /* Adds some space between this button and any elements above it */
+}
+
+button#minimapRightBtn:hover {
+    background-color: #005161; /* A darker shade of blue for the hover effect */
+}
+
+button#minimapClearBtn {
+    background-color: #008CBA; /* A similar shade of blue to keep it consistent */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-top: 5px; /* Adds some space between this button and any elements above it */
+}
+
+button#minimapClearBtn:hover {
+    background-color: #005161; /* A darker shade of blue for the hover effect */
+}
+
+button#resetBtn {
+    background-color: #008CBA; /* A similar shade of blue to keep it consistent */
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    margin-top: 5px; /* Adds some space between this button and any elements above it */
+}
+
+button#resetBtn:hover {
+    background-color: #005161; /* A darker shade of blue for the hover effect */
+}
+
+.options-heading {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: #333;
+    font-weight: bold;
+    padding-left: 10px; /* Aligns text with button text */
+}
+
+.minimap-options {
+    display: flex;
+    justify-content: space-between; /* This will space the buttons evenly */
+    margin-bottom: 10px; /* Add some space below the container */
+}
+
+.minimap-options button {
+    flex: 1; /* Each button will take up equal space */
+    margin: 0 5px; /* Add some space between buttons */
+}
+
+/* You may want to reduce the padding a bit for these buttons if they are smaller */
+.minimap-options button {
+    padding: 10px;
+    font-size: 14px; /* Adjust the font size as needed */
+}
