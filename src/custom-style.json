@@ -10,22 +10,34 @@
     },
     "layers": [
         {
-            "id": "ddynamic-polygons-line",
+            "id": "dynamic-polygons-fill-subject",
+            "type": "fill",
+            "source": "dynamic-polygons",
+            "paint": {
+                "fill-color": "#6a0dad", 
+                "fill-opacity": 0.4
+            },
+            "filter": ["==", ["get", "isSubject"], true]
+        },
+        {
+            "id": "dynamic-polygons-fill-comparable",
+            "type": "fill",
+            "source": "dynamic-polygons",
+            "paint": {
+                "fill-color": "#99d8c9", 
+                "fill-opacity": 0.5
+            },
+            "filter": ["!=", ["get", "isSubject"], true]
+        },
+        {
+            "id": "dynamic-polygons-line",
             "type": "line",
             "source": "dynamic-polygons",
             "paint": {
                 "line-color": "black",
                 "line-width": 1
-            }
-        },
-        {
-            "id": "dynamic-polygons-fill",
-            "type": "fill",
-            "source": "dynamic-polygons",
-            "paint": {
-                "fill-color": "#99d8c9",
-                "fill-opacity": 0.5
-            }
+            },
+            "filter": ["==", "$type", "Polygon"]
         }
     ]
-} 
+}

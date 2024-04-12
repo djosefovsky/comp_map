@@ -92,17 +92,23 @@ input::placeholder {
 .mapboxgl-popup .mapboxgl-popup-content {
     background-color: rgba(255, 255, 255, 0.87); /* Semi-transparent white */
     border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.507); /* Subtle shadow */
     padding-left: 5;
     padding-right: 5;
     padding-bottom: 1;
     padding-top: 1;
+    border: 1px solid rgba(170, 170, 170, 0.137);
     line-height: 0;
 }
 
 .custom-popup {
     font-size: 14px;
     font-weight: normal;
+}
+
+.subject-popup {
+    font-size: 17px; /* Set the desired font size, 2px larger than .custom-popup */
+    font-weight: bolder;
 }
 
 label {

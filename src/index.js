@@ -42,7 +42,7 @@ function reset() {
     if (map.getSource('dynamic-polygons')) {
         map.getSource('dynamic-polygons').setData({
             type: 'FeatureCollection',
-            features: [] 
+            features: []
         });
     }
 
@@ -59,10 +59,12 @@ function reset() {
     minimapContainer.style.left = ''; // Clear any left positioning
     minimapContainer.style.right = '15px'; // Reset to default right-hand side position
 
-    // Reset the map view to the initial state
-    map.jumpTo({
+    // Reset the map view to the initial state including pitch and bearing
+    map.flyTo({
         center: settings.center,
-        zoom: settings.zoom
+        zoom: settings.zoom,
+        pitch: 0, // Reset pitch to flat view
+        bearing: 0 // Reset bearing to north
     });
 
     // If there are any additional application states or visual elements that need resetting, handle them here
@@ -90,8 +92,12 @@ async function updatePolygons(userInputs) {
                 displayErrorMessage(input.inputId, "APN not found");
                 continue; // Skip to the next iteration of the loop.
             }
-        
+
             data.features.forEach((feature, index) => {
+                // Set a property based on whether the feature is the Subject
+                feature.properties.isSubject = (input.inputName === "Subject");
+                console.log(`Feature is Subject: ${feature.properties.isSubject}`); // Debugging log
+
                 features.push(feature);
                 const centroidCoords = centroid(feature).geometry.coordinates;
                 bounds.extend(centroidCoords);
@@ -112,7 +118,7 @@ async function updatePolygons(userInputs) {
             displayErrorMessage(input.inputId, "Error processing APN");
         }
 
-    }   
+    }
 
     // Update dynamic-polygons source
     if (map.getSource("dynamic-polygons")) {
@@ -120,6 +126,7 @@ async function updatePolygons(userInputs) {
             type: "FeatureCollection",
             features: features,
         });
+
     }
 
     // Fit the map bounds to the new features
@@ -163,10 +170,13 @@ function clearErrorMessage(inputId) {
 
 //Function to create and return default popop
 function createPopup(map, lngLat, text, className) {
-    const popup = new mapboxgl.Popup({ className: `custom-popup ${className}`, closeButton: false, closeOnClick: false })
-    .setLngLat(lngLat)
-    .setHTML(`<p>${text}</p>`)
-    .addTo(map);
+    // Check if the popup is for the subject or a comparable
+    const popupClass = text === "Subject" ? "subject-popup" : "custom-popup";
+
+    const popup = new mapboxgl.Popup({ className: `${popupClass} ${className}`, closeButton: false, closeOnClick: false })
+        .setLngLat(lngLat)
+        .setHTML(`<p>${text}</p>`)
+        .addTo(map);
 
     return popup;
 }
@@ -175,14 +185,14 @@ function createPopup(map, lngLat, text, className) {
 async function submitBlklots() {
     console.log("submitBlklots called");
     const userInputs = [
-        { inputId: "subjectProperty", blklot: document.getElementById("subjectProperty").value.replace(/\s+/g, ''), inputName: "Subject" },
-        { inputId: "comparableOne", blklot: document.getElementById("comparableOne").value.replace(/\s+/g, ''), inputName: "Comp 1" },
-        { inputId: "comparableTwo", blklot: document.getElementById("comparableTwo").value.replace(/\s+/g, ''), inputName: "Comp 2" },
-        { inputId: "comparableThree", blklot: document.getElementById("comparableThree").value.replace(/\s+/g, ''), inputName: "Comp 3" },
-        { inputId: "comparableFour", blklot: document.getElementById("comparableFour").value.replace(/\s+/g, ''), inputName: "Comp 4" },
-        { inputId: "comparableFive", blklot: document.getElementById("comparableFive").value.replace(/\s+/g, ''), inputName: "Comp 5" },
-        { inputId: "comparableSix", blklot: document.getElementById("comparableSix").value.replace(/\s+/g, ''), inputName: "Comp 6" },
-    ].filter(input => input.blklot.trim() !== ""); // Filter out any inputs that are empty
+        { inputId: "subjectProperty", blklot: document.getElementById("subjectProperty").value.replace(/[\s-]+/g, ''), inputName: "Subject" },
+        { inputId: "comparableOne", blklot: document.getElementById("comparableOne").value.replace(/[\s-]+/g, ''), inputName: "Comp 1" },
+        { inputId: "comparableTwo", blklot: document.getElementById("comparableTwo").value.replace(/[\s-]+/g, ''), inputName: "Comp 2" },
+        { inputId: "comparableThree", blklot: document.getElementById("comparableThree").value.replace(/[\s-]+/g, ''), inputName: "Comp 3" },
+        { inputId: "comparableFour", blklot: document.getElementById("comparableFour").value.replace(/[\s-]+/g, ''), inputName: "Comp 4" },
+        { inputId: "comparableFive", blklot: document.getElementById("comparableFive").value.replace(/[\s-]+/g, ''), inputName: "Comp 5" },
+        { inputId: "comparableSix", blklot: document.getElementById("comparableSix").value.replace(/[\s-]+/g, ''), inputName: "Comp 6" },
+    ].filter(input => input.blklot.trim() !== ""); // Filter out any inputs that are empty and trim space in between block and lot
 
     // Clear any previous error messages before updating polygons
     userInputs.forEach(input => clearErrorMessage(input.inputId));
@@ -196,7 +206,7 @@ window.submitBlklots = submitBlklots;
 // Attach the DOMContentLoaded listener at the top level
 try {
     // Remove the individual listener for 'submitBtn' and replace with delegation
-    document.body.addEventListener('click', function(e) {
+    document.body.addEventListener('click', function (e) {
         if (e.target && e.target.id === 'submitBtn') {
             submitBlklots();
         }
@@ -219,8 +229,6 @@ map.on("load", () => {
     };
     style.layers.push(...custom.layers);
     map.setStyle(style);
-
-
 
     // Initialize the Mini map
     var minimap = new mapboxgl.Map({
@@ -289,7 +297,7 @@ map.on("load", () => {
     }
 
     // Ensure minimap is loaded before adding frame source and layer
-    minimap.on("load", function() {
+    minimap.on("load", function () {
         // Initialize frame source and layer on minimap load
         initializeMinimapFrame();
 
@@ -302,21 +310,21 @@ map.on("load", () => {
     map.on("moveend", updateMinimapFrame);
 
     // Minimap position and visibility control
-    document.getElementById('minimapLeftBtn').addEventListener('click', function() {
+    document.getElementById('minimapLeftBtn').addEventListener('click', function () {
         const minimapContainer = document.getElementById('minimap-container');
         minimapContainer.style.display = 'block'; // Make sure minimap is visible
         minimapContainer.style.right = ''; // Clear right property
         minimapContainer.style.left = '15px'; // Move to the left
     });
 
-    document.getElementById('minimapRightBtn').addEventListener('click', function() {
+    document.getElementById('minimapRightBtn').addEventListener('click', function () {
         const minimapContainer = document.getElementById('minimap-container');
         minimapContainer.style.display = 'block'; // Make sure minimap is visible
         minimapContainer.style.left = ''; // Clear any left positioning
         minimapContainer.style.right = '15px'; // Reset to default right-hand side position
     });
 
-    document.getElementById('minimapClearBtn').addEventListener('click', function() {
+    document.getElementById('minimapClearBtn').addEventListener('click', function () {
         document.getElementById('minimap-container').style.display = 'none'; // Hide the minimap
     });
 
