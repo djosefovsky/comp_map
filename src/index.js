@@ -233,7 +233,7 @@ map.on("load", () => {
     // Initialize the Mini map
     var minimap = new mapboxgl.Map({
         container: "minimap-container",
-        style: "mapbox://styles/domeajar/cluee5jau00jl01q5alqn64a7",
+        style: "mapbox://styles/domeajar/cmdlws6xs009801sj9eac521z",
         zoom: map.getZoom() - 4,
         center: map.getCenter(),
     });

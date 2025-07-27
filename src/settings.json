@@ -1,6 +1,6 @@
 {
     "container": "map",
-    "accessToken": "pk.eyJ1IjoiZG9tZWFqYXIiLCJhIjoiY2p2M2FxYXozMDEyMjN5bXdsZHdocnRvYiJ9.FvhklTIlyW6hqvuvP6d0fg",
+    "accessToken": "pk.eyJ1IjoiZG9tZWFqYXIiLCJhIjoiY21kaHJwMGoyMDB2OTJrcHI0cnMwMHdsbSJ9._edXAtQ0_ueB47PYXdNVuA",
     "style": "mapbox://styles/mapbox/streets-v12",
     "zoom": 12,
     "center": [
